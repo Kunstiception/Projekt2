@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -49,6 +50,12 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 385061303
+    locked: 0
+  - name: ObstaclesAlternative
+    uniqueID: 657381523
+    locked: 0
+  - name: Foreground
+    uniqueID: 1215656819
     locked: 0
   m_RenderingLayers:
   - Default
