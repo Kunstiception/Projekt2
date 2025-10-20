@@ -67,16 +67,19 @@ public class Mover : MonoBehaviour
         _isWalkingRight = !_isWalkingRight;      
     }
 
-    private void LookForObstacles(Vector2 direction, Vector2 endPoint)
+    private float LookForBorders(Vector2 endPoint)
     {
         RaycastHit2D hit;
         hit = Physics2D.Linecast(_feetTransform.position, endPoint, _raycastLayermask);
 
-        if(hit)
+        if (hit)
         {
-            Debug.DrawRay(_feetTransform.position, direction);
-            Debug.Log(hit.transform.name);          
+            Debug.Log(hit.point);
+
+            return hit.point.y;
         }
+
+        return endPoint.y;
     }
 
     // Ensures that target position is at the feet of the character
@@ -88,19 +91,13 @@ public class Mover : MonoBehaviour
     // Moves transform to the selected position
     private IEnumerator MoveTransform(Vector2 targetPosition)
     {
-        //Debug.Log(targetPosition);
-
         float timer = 0;
+
         Vector2 initialPosition = _transform.position;
-        Vector2 finalPosition = new Vector2(targetPosition.x, GetCorrectYPosition(targetPosition.y));
-        Vector2 startingPosition = new Vector2(_feetTransform.position.x, _feetTransform.position.y);
-        float distance = Vector2.Distance(startingPosition, targetPosition);
-        //https://gamedevbeginner.com/direction-vectors-in-unity/
-        Vector2 direction = (targetPosition - startingPosition).normalized;
+        Vector2 finalPosition = new Vector2 (targetPosition.x, LookForBorders(targetPosition));
+        finalPosition.y = GetCorrectYPosition(finalPosition.y);
 
-        LookForObstacles(direction, targetPosition);
-
-        //Debug.Log(GetCorrectYPosition(targetPosition.y));
+        Debug.Log(finalPosition);
 
         float movementLength = Vector2.Distance(initialPosition, finalPosition);
         float movementDuration = movementLength / GameConfig.PlayerSpeed;
@@ -117,10 +114,8 @@ public class Mover : MonoBehaviour
             yield return null;
         }
 
-        _transform.position = finalPosition;
-
         _movementCoroutine = null;
 
-        //Debug.Log("Target position reached");
+        Debug.Log("Target position reached");
     }
 }
