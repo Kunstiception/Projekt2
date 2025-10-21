@@ -3,19 +3,21 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-    [SerializeField] private Transform _transform;
+    //[SerializeField] private Transform _transform;
     [SerializeField] private Transform _feetTransform;
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private LayerMask _raycastLayermask;
     private bool _isWalkingRight;
+    private Vector2 _walkingDirection;
+    private Vector2 _actualTargetPoint;
     private Vector3 _scale;
-    private SpriteRenderer _renderer;
+    //private SpriteRenderer _renderer;
     private Coroutine _movementCoroutine;
 
     void Start()
     {
         _isWalkingRight = true;
-        _renderer = GetComponent<SpriteRenderer>();
+        //_renderer = GetComponent<SpriteRenderer>();
         _scale = transform.localScale;
     }
 
@@ -33,7 +35,7 @@ public class Mover : MonoBehaviour
 
             FlipSprite(cursorPosition);
 
-            _movementCoroutine = StartCoroutine(MoveTransform(cursorPosition));
+            _movementCoroutine = StartCoroutine(MoveRigidbody(SetMovement(cursorPosition), false));
         }
     }
 
@@ -45,7 +47,7 @@ public class Mover : MonoBehaviour
 
     private void FlipSprite(Vector2 cursorPosition)
     {
-        if (_transform.position.x < cursorPosition.x)
+        if (transform.position.x < cursorPosition.x)
         {
             if (_isWalkingRight)
             {
@@ -67,19 +69,37 @@ public class Mover : MonoBehaviour
         _isWalkingRight = !_isWalkingRight;      
     }
 
-    private float LookForBorders(Vector2 endPoint)
+    private IEnumerator LookForObstacles(Vector2 direction)
     {
-        RaycastHit2D hit;
-        hit = Physics2D.Linecast(_feetTransform.position, endPoint, _raycastLayermask);
+        RaycastHit2D hitLeft;
+        RaycastHit2D hitRight;
 
-        if (hit)
+        // https://discussions.unity.com/t/multiply-quaternion-by-vector/31759
+        hitLeft = Physics2D.Raycast(_feetTransform.position, Quaternion.Euler(0, 0, -45) * direction, 1, _raycastLayermask);
+        hitRight = Physics2D.Raycast(_feetTransform.position, Quaternion.Euler(0, 0, 45) * direction, 1, _raycastLayermask);
+
+        Vector2 position = new Vector2(transform.position.x, transform.position.y);
+
+        if (!hitLeft)
         {
-            Debug.Log(hit.point);
+            Debug.Log("Left side is free!");
 
-            return hit.point.y;
+            Debug.Log(position);
+            Debug.Log(position + new Vector2(-0.1f, 0));
+
+            yield return _movementCoroutine = StartCoroutine(MoveRigidbody(SetMovement(position + new Vector2(-0.1f, 0)), true));
+
+            _movementCoroutine = StartCoroutine(MoveRigidbody(_actualTargetPoint, false));
+        }
+        else if (!hitRight)
+        {
+            Debug.Log("Right side is free!");
+
+            yield return _movementCoroutine = StartCoroutine(MoveRigidbody(position + new Vector2(0.1f, 0), true));
+
+            _movementCoroutine = StartCoroutine(MoveRigidbody(_actualTargetPoint, false));
         }
 
-        return endPoint.y;
     }
 
     // Ensures that target position is at the feet of the character
@@ -89,33 +109,71 @@ public class Mover : MonoBehaviour
     }
 
     // Moves transform to the selected position
-    private IEnumerator MoveTransform(Vector2 targetPosition)
+    private Vector2 SetMovement(Vector2 targetPosition)
     {
-        float timer = 0;
-
-        Vector2 initialPosition = _transform.position;
-        Vector2 finalPosition = new Vector2 (targetPosition.x, LookForBorders(targetPosition));
+        Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y);
+        Vector2 finalPosition = new Vector2(targetPosition.x, targetPosition.y);
         finalPosition.y = GetCorrectYPosition(finalPosition.y);
+
+        //https://gamedevbeginner.com/direction-vectors-in-unity/
+        _walkingDirection = (targetPosition - startingPosition).normalized;
 
         Debug.Log(finalPosition);
 
-        float movementLength = Vector2.Distance(initialPosition, finalPosition);
-        float movementDuration = movementLength / GameConfig.PlayerSpeed;
+        return finalPosition;
+    }
 
-        while (timer < movementDuration)
+    // https://discussions.unity.com/t/how-would-i-move-a-rigidbody-towards-another-object/33779/2
+    private IEnumerator MoveRigidbody(Vector2 targetPosition, bool isCollision)
+    {
+        Vector2 currentPosition;
+        Vector2 endpoint;
+
+        if (!isCollision)
         {
-            timer += Time.deltaTime;
+            _actualTargetPoint = targetPosition;
+            endpoint = targetPosition;
+        }
+        else
+        {
+            endpoint = targetPosition;
+        }
 
-            _rigidbody.MovePosition(Vector2.Lerp(initialPosition, finalPosition,
-                timer / movementDuration));
+        while (Vector2.Distance(_rigidbody.position, targetPosition) > 0.05f)
+        {
+            currentPosition = Vector2.MoveTowards(transform.position, endpoint, GameConfig.PlayerSpeed * Time.fixedDeltaTime);
+            _rigidbody.MovePosition(currentPosition);
 
             ScaleSprite();
 
             yield return null;
         }
 
-        _movementCoroutine = null;
+        _rigidbody.position = endpoint;
 
+        _movementCoroutine = null;
+        
         Debug.Log("Target position reached");
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Border") && _movementCoroutine != null)
+        {
+            StopCoroutine(_movementCoroutine);
+            _movementCoroutine = null;
+
+            Debug.Log("Hit Border!");
+        }
+
+        if(collision.transform.CompareTag("Obstacle") && _movementCoroutine != null)
+        {
+            StopCoroutine(_movementCoroutine);
+            _movementCoroutine = null;
+
+            Debug.Log("Hit Obstacle!");
+
+            StartCoroutine(LookForObstacles(_walkingDirection));
+        }
     }
 }
