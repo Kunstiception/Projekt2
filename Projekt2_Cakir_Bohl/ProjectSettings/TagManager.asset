@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Border
   - Obstacle
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - UI
   - Border
   - Obstacle
-  - 
+  - Item
   - 
   - 
   - 
@@ -48,6 +49,9 @@ TagManager:
     locked: 0
   - name: Obstacles
     uniqueID: 1804017753
+    locked: 0
+  - name: Items
+    uniqueID: 3711414985
     locked: 0
   - name: Player
     uniqueID: 385061303

@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public class Mover : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    //[SerializeField] private Transform _transform;
+    public PlayerStateMachine PlayerStateMachine => _playerStateMachine;
+
     [SerializeField] private Transform _feetTransform;
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private LayerMask _raycastLayermask;
@@ -11,17 +12,38 @@ public class Mover : MonoBehaviour
     private Vector2 _walkingDirection;
     private Vector2 _actualTargetPoint;
     private Vector3 _scale;
-    //private SpriteRenderer _renderer;
+    private Item _currentItem;
     private Coroutine _movementCoroutine;
+    private PlayerStateMachine _playerStateMachine;
 
-    void Start()
+    private void Awake()
     {
-        _isWalkingRight = true;
-        //_renderer = GetComponent<SpriteRenderer>();
-        _scale = transform.localScale;
+        _playerStateMachine = new PlayerStateMachine(this);
     }
 
-    void Update()
+    private void Start()
+    {
+        _isWalkingRight = true;
+        _scale = transform.localScale;
+
+        _playerStateMachine.Initialize(_playerStateMachine.idleState);
+
+        ScaleSprite();
+    }
+
+    private void OnEnable()
+    {
+        Item.onItemEnter += SetItem;
+        Item.OnItemExit += ClearItem;
+    }
+
+    private void OnDisable()
+    {
+        Item.onItemEnter -= SetItem;
+        Item.OnItemExit -= ClearItem;
+    }
+
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -31,12 +53,24 @@ public class Mover : MonoBehaviour
                 _movementCoroutine = null;
             }
 
-            Vector2 cursorPosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+            Vector2 targetPosition;
 
-            FlipSprite(cursorPosition);
+            if (_currentItem == null)
+            {
+                targetPosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+            }
+            else
+            {
+                Debug.Log($"Selected item: {_currentItem.name}");
+                targetPosition = _currentItem.ReturnClosestAnchor(_rigidbody.position);
+            }
 
-            _movementCoroutine = StartCoroutine(MoveRigidbody(SetMovement(cursorPosition), false));
+            FlipSprite(targetPosition);
+
+            _movementCoroutine = StartCoroutine(MoveRigidbody(SetMovement(targetPosition), false));
         }
+
+        _playerStateMachine.Execute();
     }
 
     private void ScaleSprite()
@@ -151,9 +185,35 @@ public class Mover : MonoBehaviour
 
         _rigidbody.position = endpoint;
 
+        if(_currentItem != null)
+        {
+            FlipSprite(_currentItem.transform.position);
+            ScaleSprite();
+        }
+
         _movementCoroutine = null;
-        
+
         Debug.Log("Target position reached");
+    }
+
+    public bool ReturnWalkingCoroutineState()
+    {
+        if (_movementCoroutine == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void SetItem(Item item)
+    {
+        _currentItem = item;
+    }
+    
+    private void ClearItem()
+    {
+        _currentItem = null;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -168,12 +228,12 @@ public class Mover : MonoBehaviour
 
         if(collision.transform.CompareTag("Obstacle") && _movementCoroutine != null)
         {
-            StopCoroutine(_movementCoroutine);
-            _movementCoroutine = null;
+            // StopCoroutine(_movementCoroutine);
+            // _movementCoroutine = null;
 
             Debug.Log("Hit Obstacle!");
 
-            StartCoroutine(LookForObstacles(_walkingDirection));
+            // StartCoroutine(LookForObstacles(_walkingDirection));
         }
     }
 }

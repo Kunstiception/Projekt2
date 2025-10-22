@@ -1,4 +1,4 @@
-public class IState
+public interface IState
 {
     public void Enter()
     {
