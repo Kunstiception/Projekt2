@@ -11,12 +11,12 @@ public class IdleState : IState
 
     public void Enter()
     {
-        Debug.Log("Idle Animation!");
+        Debug.Log("Entering Idle State!");
     }
 
     public void Execute()
     {
-        if(!_playerController.ReturnWalkingCoroutineState())
+        if(_playerController.ReturnWalkingCoroutineState())
         {
             _playerController.PlayerStateMachine.TransitionTo(_playerController.PlayerStateMachine.walkState);
         }

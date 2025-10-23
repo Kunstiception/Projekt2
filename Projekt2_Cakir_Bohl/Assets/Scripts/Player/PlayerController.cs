@@ -25,22 +25,11 @@ public class PlayerController : MonoBehaviour
     {
         _isWalkingRight = true;
         _scale = transform.localScale;
+        _movementCoroutine = null;
 
         _playerStateMachine.Initialize(_playerStateMachine.idleState);
 
         ScaleSprite();
-    }
-
-    private void OnEnable()
-    {
-        Item.onItemEnter += SetItem;
-        Item.OnItemExit += ClearItem;
-    }
-
-    private void OnDisable()
-    {
-        Item.onItemEnter -= SetItem;
-        Item.OnItemExit -= ClearItem;
     }
 
     private void Update()
@@ -54,6 +43,7 @@ public class PlayerController : MonoBehaviour
             }
 
             Vector2 targetPosition;
+            _currentItem = LookForItem();
 
             if (_currentItem == null)
             {
@@ -94,13 +84,30 @@ public class PlayerController : MonoBehaviour
             {
                 return;
             }
-        } 
-        
+        }
+
         // https://stackoverflow.com/questions/26568542/flipping-a-2d-sprite-animation-in-unity-2d
         _scale.x *= -1;
         transform.localScale = _scale;
 
-        _isWalkingRight = !_isWalkingRight;      
+        _isWalkingRight = !_isWalkingRight;
+    }
+    
+    private Item LookForItem()
+    {
+        // https://stackoverflow.com/questions/20583653/raycasting-to-find-mouseclick-on-object-in-unity-2d-games
+        RaycastHit2D hit;
+
+        hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+        if (hit && hit.transform.CompareTag("Item"))
+        {
+            return hit.transform.GetComponent<Item>();
+        }
+        else
+        {
+            return null;
+        }
     }
 
     private IEnumerator LookForObstacles(Vector2 direction)
@@ -200,20 +207,20 @@ public class PlayerController : MonoBehaviour
     {
         if (_movementCoroutine == null)
         {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool ReturnItemSelected()
+    {
+        if (_currentItem != null)
+        {
             return true;
         }
 
         return false;
-    }
-
-    private void SetItem(Item item)
-    {
-        _currentItem = item;
-    }
-    
-    private void ClearItem()
-    {
-        _currentItem = null;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -2,22 +2,22 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item : MonoBehaviour, IInteractable
 {
     [SerializeField] private Transform[] _anchors;
 
-    public static event Action<Item> onItemEnter;
-    public static event Action OnItemExit;
+    //public static event Action<Item> onItemEnter;
+    //public static event Action OnItemExit;
 
-    private void OnMouseEnter()
-    {
-        onItemEnter?.Invoke(this);
-    }
+    // private void OnMouseDown()
+    // {
+    //     onItemEnter?.Invoke(this);
+    // }
 
-    private void OnMouseExit()
-    {
-        OnItemExit?.Invoke();
-    }
+    // private void OnMouseExit()
+    // {
+    //     OnItemExit?.Invoke();
+    // }
 
     public Vector2 ReturnClosestAnchor(Vector3 playerPosition)
     {
@@ -25,5 +25,10 @@ public class Item : MonoBehaviour
         Transform closestAnchor = _anchors.OrderBy(anchor => (anchor.position - playerPosition).sqrMagnitude).FirstOrDefault();
 
         return new Vector2(closestAnchor.position.x, closestAnchor.position.y);
+    }
+
+    public void Interact()
+    {
+        Debug.Log("Interacting with item!");
     }
 }
