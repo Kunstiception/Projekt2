@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class PlayerStateMachine
@@ -8,8 +9,6 @@ public class PlayerStateMachine
     public WalkState walkState;
     public IdleState idleState;
     public InteractionState interactionState;
-
-    //public event Action<IState> stateChanged;
 
     public PlayerStateMachine(PlayerController playerController)
     {

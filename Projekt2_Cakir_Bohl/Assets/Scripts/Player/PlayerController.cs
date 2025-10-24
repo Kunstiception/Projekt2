@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public PlayerStateMachine PlayerStateMachine => _playerStateMachine;
+    public Interaction CurrentInteraction => _currentInteraction;
 
     [SerializeField] private Transform _feetTransform;
     [SerializeField] private Rigidbody2D _rigidbody;
@@ -12,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _walkingDirection;
     private Vector2 _actualTargetPoint;
     private Vector3 _scale;
-    private Item _currentItem;
+    private Interaction _currentInteraction;
     private Coroutine _movementCoroutine;
     private PlayerStateMachine _playerStateMachine;
 
@@ -34,6 +35,13 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        _playerStateMachine.Execute();
+
+        if (_playerStateMachine.CurrentState == _playerStateMachine.interactionState)
+        {
+            return;
+        }
+        
         if (Input.GetMouseButtonDown(0))
         {
             if (_movementCoroutine != null)
@@ -43,24 +51,22 @@ public class PlayerController : MonoBehaviour
             }
 
             Vector2 targetPosition;
-            _currentItem = LookForItem();
+            _currentInteraction = LookForInteraction();
 
-            if (_currentItem == null)
+            if (_currentInteraction == null)
             {
                 targetPosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
             }
             else
             {
-                Debug.Log($"Selected item: {_currentItem.name}");
-                targetPosition = _currentItem.ReturnClosestAnchor(_rigidbody.position);
+                Debug.Log($"Selected interaction: {_currentInteraction}");
+                targetPosition = _currentInteraction.ReturnClosestAnchor(_rigidbody.position);
             }
 
             FlipSprite(targetPosition);
 
             _movementCoroutine = StartCoroutine(MoveRigidbody(SetMovement(targetPosition), false));
         }
-
-        _playerStateMachine.Execute();
     }
 
     private void ScaleSprite()
@@ -93,16 +99,16 @@ public class PlayerController : MonoBehaviour
         _isWalkingRight = !_isWalkingRight;
     }
     
-    private Item LookForItem()
+    private Interaction LookForInteraction()
     {
         // https://stackoverflow.com/questions/20583653/raycasting-to-find-mouseclick-on-object-in-unity-2d-games
         RaycastHit2D hit;
 
         hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-        if (hit && hit.transform.CompareTag("Item"))
+        if (hit && hit.transform.CompareTag("Interaction"))
         {
-            return hit.transform.GetComponent<Item>();
+            return hit.transform.GetComponent<Interaction>();
         }
         else
         {
@@ -192,10 +198,15 @@ public class PlayerController : MonoBehaviour
 
         _rigidbody.position = endpoint;
 
-        if(_currentItem != null)
+        if(_currentInteraction != null)
         {
-            FlipSprite(_currentItem.transform.position);
+            FlipSprite(_currentInteraction.transform.position);
             ScaleSprite();
+
+            if(_currentInteraction is IInteractable)
+            {
+                _currentInteraction.GetComponent<IInteractable>().StartInteraction();
+            }
         }
 
         _movementCoroutine = null;
@@ -215,7 +226,7 @@ public class PlayerController : MonoBehaviour
 
     public bool ReturnItemSelected()
     {
-        if (_currentItem != null)
+        if (_currentInteraction != null)
         {
             return true;
         }

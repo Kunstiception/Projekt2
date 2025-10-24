@@ -3,7 +3,6 @@ using UnityEngine;
 public class InteractionState: IState
 {
     private PlayerController _playerController;
-    private float _timer = 0;
 
     public InteractionState(PlayerController playerController)
     {
@@ -17,17 +16,15 @@ public class InteractionState: IState
 
     public void Execute()
     {
-        _timer += Time.deltaTime;
-        
-        if(_timer > 2f)
+        Debug.Log("Works");
+        if(_playerController.CurrentInteraction.HasFinished)
         {
             _playerController.PlayerStateMachine.TransitionTo(_playerController.PlayerStateMachine.idleState);         
-        }
-        
+        }    
     }
     
     public void Exit()
     {
-        _timer = 0;
+
     }
 }

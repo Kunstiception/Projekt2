@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class MouseDraw : MonoBehaviour
     [SerializeField] private GameObject _line;
     private Coroutine _drawingCoroutine;
 
+    public static event Action OnMouseUp;
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -19,6 +22,8 @@ public class MouseDraw : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             FinishDrawing();
+
+            OnMouseUp?.Invoke();
         }
     }
 
