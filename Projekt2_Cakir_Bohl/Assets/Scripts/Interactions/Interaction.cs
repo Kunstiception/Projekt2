@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using UnityEngine;
 
@@ -15,5 +14,13 @@ public class Interaction : MonoBehaviour
         Transform closestAnchor = _anchors.OrderBy(anchor => (anchor.position - playerPosition).sqrMagnitude).FirstOrDefault();
 
         return new Vector2(closestAnchor.position.x, closestAnchor.position.y);
+    }
+
+    protected void ResetHasFinished()
+    {
+        if(_hasFinished == true)
+        {
+            _hasFinished = false;
+        }
     }
 }

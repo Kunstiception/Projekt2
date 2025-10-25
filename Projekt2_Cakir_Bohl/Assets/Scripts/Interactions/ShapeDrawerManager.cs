@@ -1,19 +1,11 @@
 using UnityEngine;
 
-public class ShapDrawerManager : Interaction, IInteractable
+public class ShapeDrawerManager : Interaction, IInteractable
 {
-    [SerializeField] private Shape[] _possibleShapes;
+    [SerializeField] private GameObject[] _possibleShapes;
     private int _counter;
     private int _correctCounter;
-    private Shape _selectedShape;
-
-    private void Start()
-    {
-        foreach (Shape shape in _possibleShapes)
-        {
-            shape.gameObject.SetActive(false);
-        }
-    }
+    private GameObject _selectedShape;
 
     private void OnEnable()
     {
@@ -29,10 +21,9 @@ public class ShapDrawerManager : Interaction, IInteractable
 
     private void LoadShape()
     {
-        _selectedShape = _possibleShapes[UnityEngine.Random.Range(0, _possibleShapes.Length)];
-        _selectedShape.gameObject.SetActive(true);
+        _selectedShape = Instantiate(_possibleShapes[UnityEngine.Random.Range(0, _possibleShapes.Length)]);
 
-        _correctCounter = _selectedShape.CorrectCounter;
+        _correctCounter = _selectedShape.GetComponent<Shape>().CorrectCounter;
     }
 
     public void CheckResult()
@@ -48,7 +39,7 @@ public class ShapDrawerManager : Interaction, IInteractable
 
         _counter = 0;
 
-        _selectedShape.gameObject.SetActive(false);
+        Destroy(_selectedShape);
         _selectedShape = null;
 
         _hasFinished = true;
@@ -64,5 +55,7 @@ public class ShapDrawerManager : Interaction, IInteractable
     {
         Debug.Log("Started interaction!");
         LoadShape();
+
+        ResetHasFinished();
     }
 }

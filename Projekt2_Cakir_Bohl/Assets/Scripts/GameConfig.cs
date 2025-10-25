@@ -5,4 +5,7 @@ public class GameConfig
 
     // Environment
     public static string AlternativeSortingLayerName = "ObstaclesAlternative";
+
+    // Interactions
+    public static float LineLifeTime = 0.5f;
 }

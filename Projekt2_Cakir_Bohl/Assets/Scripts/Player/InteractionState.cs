@@ -16,7 +16,6 @@ public class InteractionState: IState
 
     public void Execute()
     {
-        Debug.Log("Works");
         if(_playerController.CurrentInteraction.HasFinished)
         {
             _playerController.PlayerStateMachine.TransitionTo(_playerController.PlayerStateMachine.idleState);         
