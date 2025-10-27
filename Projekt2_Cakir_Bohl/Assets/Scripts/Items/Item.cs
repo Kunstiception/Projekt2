@@ -5,10 +5,18 @@ using UnityEngine;
 public class Item : Interaction, IInteractable
 {
     public Action OnInteractionFinished { get; set; }
+    [SerializeField] private ItemStats _stats;
+    private SpriteRenderer _spriteRenderer;
+
+    private void Start()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer.sprite = _stats.ItemVisual;
+    }
 
     public void StartInteraction()
     {
-        Debug.Log("Interacting with item!");
+        Debug.Log($"Interacting with {_stats.Name}!");
 
         ResetHasFinished();
 
@@ -17,7 +25,7 @@ public class Item : Interaction, IInteractable
 
     protected IEnumerator PickUpItem()
     {
-        Debug.Log($"Juno has picked up {this.name}!");
+        Debug.Log($"Juno has picked up {_stats.Name}!");
 
         yield return new WaitForSeconds(2);
 

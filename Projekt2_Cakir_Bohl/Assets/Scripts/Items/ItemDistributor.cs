@@ -6,13 +6,14 @@ public class ItemDistributor : MonoBehaviour
 {
     [SerializeField] private Item[] _itemsDay;
     [SerializeField] private Item[] _itemsNight;
-    [SerializeField] private Transform[] _positions;
+    [SerializeField] private SpawnPoint[] _spawnPoints;
     private bool _wasDay;
-    private Item[] _tempItems;
 
     private void Start()
     {
-        SelectItems(ProgressionManager.Instance.IsDay);
+        //SelectItems(ProgressionManager.Instance.IsDay);
+
+        SetItemPositions();
     }
     
     private void SelectItems(bool isDay)
@@ -28,20 +29,15 @@ public class ItemDistributor : MonoBehaviour
 
     private void SetItemPositions()
     {
-        List<Transform> tempPositions = _positions.ToList();
+        List<SpawnPoint> tempSpawnPoints = _spawnPoints.ToList();
+        List<Item> spawnedItems = new List<Item>();
 
-        foreach (Item item in _tempItems)
+        foreach (SpawnPoint spawnPoint in tempSpawnPoints)
         {
-            Item instance = item;
-            Instantiate(instance);
-            Transform instancePosition = tempPositions[UnityEngine.Random.Range(0, tempPositions.Count)];
-            instance.transform.position = instancePosition.position;
+            Item item = spawnPoint.SetItem();
+            spawnedItems.Add(item);
 
-            tempPositions.Remove(instancePosition);
+            Debug.Log(item.name);
         }
     }
-    
-    // Object/Struct/Listen anlegen, die Item-Konfiguration speichern
-
-
 }
