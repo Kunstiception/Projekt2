@@ -1,25 +1,49 @@
 using System;
 using UnityEngine;
 
+public enum InteractionType
+{
+    Once = 1,
+    Repeated = 2
+}
+
 public class ShapeDrawerManager : Interaction
 {
+    public InteractionType InteractionType;
+
     //[SerializeField] private GameObject[] _possibleShapes;
+    [SerializeField] GameObject _shape;
     private int _counter;
     private int _correctCounter;
     private GameObject _selectedShape;
     private bool _wasCorrect;
 
     public static event Action<bool> SendResult;
+    public static event Action SendCompleted;
+
+    private void Start()
+    {
+        _correctCounter = _shape.GetComponent<Shape>().CorrectCounter;
+        Debug.Log(_correctCounter);
+    }
 
     private void OnEnable()
     {
-        MouseDraw.OnMouseUp += CheckResult;
+        if (InteractionType == InteractionType.Once)
+        {
+            MouseDraw.OnMouseUp += CheckResult;
+        }
+
         Box.OnTouched += IncrementCounter;
     }
 
     private void OnDisable()
     {
-        MouseDraw.OnMouseUp -= CheckResult;
+        if (InteractionType == InteractionType.Once)
+        {
+            MouseDraw.OnMouseUp += CheckResult;
+        }
+        
         Box.OnTouched -= IncrementCounter;
     }
 
@@ -32,9 +56,9 @@ public class ShapeDrawerManager : Interaction
 
     public void CheckResult()
     {
-        if ((float)_counter / (float)_correctCounter >= 0.8f)
+        if (_counter / _correctCounter >= 0.8f)
         {
-            Debug.Log("Correct!");
+            Debug.Log($"Correct! {_counter / (float)_correctCounter}");
             _wasCorrect = true;
         }
         else
@@ -45,11 +69,18 @@ public class ShapeDrawerManager : Interaction
 
         CloseInteraction();
     }
-    
+
     private void IncrementCounter()
     {
         _counter++;
         Debug.Log(_counter);
+
+        if(InteractionType == InteractionType.Repeated && _counter == _correctCounter)
+        {
+            SendCompleted?.Invoke();
+
+            _counter = 0;
+        }
     }
 
     // public void StartInteraction()

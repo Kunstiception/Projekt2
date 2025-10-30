@@ -10,7 +10,12 @@ public class GameConfig
     public static float LineLifeTime = 0.5f;
 
     // Crafting
-    public static float BreakDownRegression = 0.005f;
+    // Crushing
+    public static float BreakDownAutoStep = 0.005f;
     public static float BreakDownIncrement = 0.1f;
     public static int BreakDownMaxCounter = 3;
+    // Cooking
+    public static int CookingMaxCounter = 10;
+    public static float CookingIncrement = 0.1f;
+    public static float CookingAutoStep = 0.005f;
 }

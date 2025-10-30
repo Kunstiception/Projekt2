@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ public class DrawGridManager : Interaction, IInteractable
     private ShapeDefinition _currentShapeDefinion;
     private Coroutine _drawingCoroutine;
     private bool _isDrawing;
+
+    public static event Action Reset;
 
     private void OnEnable()
     {
@@ -33,7 +36,7 @@ public class DrawGridManager : Interaction, IInteractable
 
     private void ChoseDefinitions()
     {
-        int randomNumber = UnityEngine.Random.Range(0, _shapeDefinitions.Length);
+        int randomNumber = UnityEngine.Random.Range(2, _shapeDefinitions.Length);
 
         List<ShapeDefinition> tempDefinitions = _shapeDefinitions.ToList();
 
@@ -60,6 +63,8 @@ public class DrawGridManager : Interaction, IInteractable
             _isDrawing = true;
 
             yield return new WaitUntil(() => _isDrawing == false);
+
+            Reset?.Invoke();
         }
     }
 
@@ -98,10 +103,10 @@ public class DrawGridManager : Interaction, IInteractable
         {
             Debug.LogError("Correct!");
         }
-        // else
-        // {
-        //     Debug.LogError($"Wrong number: {correctCounter}");
-        // }
+        else
+        {
+            Debug.LogError($"Wrong number: {correctCounter}");
+        }
 
         if(_currentShapeDefinion == _selectedShapeDefinitions.Last())
         {
@@ -122,7 +127,7 @@ public class DrawGridManager : Interaction, IInteractable
         ChoseDefinitions();
     }
 
-    private void CloseInteraction()
+    public void CloseInteraction()
     {
         _currentSquares.Clear();
         _selectedShapeDefinitions.Clear();
@@ -130,10 +135,5 @@ public class DrawGridManager : Interaction, IInteractable
         _hasFinished = true;
 
         _grid.SetActive(false);
-    }
-
-    void IInteractable.CloseInteraction()
-    {
-        CloseInteraction();
     }
 }

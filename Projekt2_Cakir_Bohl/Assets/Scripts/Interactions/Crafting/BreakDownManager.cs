@@ -28,7 +28,7 @@ public class BreakDownManager : Interaction, IInteractable
     {
         if(_isRunning)
         {
-            _slider.value -= GameConfig.BreakDownRegression;         
+            _slider.value -= GameConfig.BreakDownAutoStep;         
         }
     }
 

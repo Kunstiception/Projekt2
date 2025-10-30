@@ -7,11 +7,36 @@ public class DrawGridSquare : MonoBehaviour
 
     public static event Action<string> OnTouched;
 
-    private void OnMouseEnter()
+    private bool _wasTouched = false;
+
+    private void OnEnable()
     {
-        if(Input.GetMouseButton(0))
+        DrawGridManager.Reset += Reset;
+    }
+
+    private void OnDisable()
+    {
+        DrawGridManager.Reset -= Reset;
+    }
+
+    private void OnMouseOver()
+    {
+        if (_wasTouched)
         {
-            OnTouched?.Invoke(SquareName);
+            return;
         }
+
+        //Debug.Log($"Entered {this.gameObject}");
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log($"Correctly entered: {this.gameObject}");
+            OnTouched?.Invoke(SquareName);
+            _wasTouched = true;
+        }
+    }
+    
+    private void Reset()
+    {
+        _wasTouched = false;
     }
 }

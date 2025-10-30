@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
         //https://gamedevbeginner.com/direction-vectors-in-unity/
         _walkingDirection = (targetPosition - startingPosition).normalized;
 
-        Debug.Log(finalPosition);
+        //Debug.Log(finalPosition);
 
         return finalPosition;
     }
@@ -211,7 +211,7 @@ public class PlayerController : MonoBehaviour
 
         _movementCoroutine = null;
 
-        Debug.Log("Target position reached");
+        //Debug.Log("Target position reached");
     }
 
     public bool ReturnWalkingCoroutineState()
