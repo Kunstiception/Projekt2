@@ -131,4 +131,9 @@ public class DrawGridManager : Interaction, IInteractable
 
         _grid.SetActive(false);
     }
+
+    void IInteractable.CloseInteraction()
+    {
+        CloseInteraction();
+    }
 }

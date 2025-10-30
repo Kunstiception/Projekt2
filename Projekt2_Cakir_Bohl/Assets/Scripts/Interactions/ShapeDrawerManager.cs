@@ -1,11 +1,15 @@
+using System;
 using UnityEngine;
 
-public class ShapeDrawerManager : Interaction, IInteractable
+public class ShapeDrawerManager : Interaction
 {
-    [SerializeField] private GameObject[] _possibleShapes;
+    //[SerializeField] private GameObject[] _possibleShapes;
     private int _counter;
     private int _correctCounter;
     private GameObject _selectedShape;
+    private bool _wasCorrect;
+
+    public static event Action<bool> SendResult;
 
     private void OnEnable()
     {
@@ -19,30 +23,27 @@ public class ShapeDrawerManager : Interaction, IInteractable
         Box.OnTouched -= IncrementCounter;
     }
 
-    private void LoadShape()
-    {
-        _selectedShape = Instantiate(_possibleShapes[UnityEngine.Random.Range(0, _possibleShapes.Length)]);
+    // private void LoadShape()
+    // {
+    //     _selectedShape = Instantiate(_possibleShapes[UnityEngine.Random.Range(0, _possibleShapes.Length)]);
 
-        _correctCounter = _selectedShape.GetComponent<Shape>().CorrectCounter;
-    }
+    //     _correctCounter = _selectedShape.GetComponent<Shape>().CorrectCounter;
+    // }
 
     public void CheckResult()
     {
         if ((float)_counter / (float)_correctCounter >= 0.8f)
         {
             Debug.Log("Correct!");
+            _wasCorrect = true;
         }
         else
         {
             Debug.Log("Do it again!");
+            _wasCorrect = false;
         }
 
-        _counter = 0;
-
-        Destroy(_selectedShape);
-        _selectedShape = null;
-
-        _hasFinished = true;
+        CloseInteraction();
     }
     
     private void IncrementCounter()
@@ -51,11 +52,23 @@ public class ShapeDrawerManager : Interaction, IInteractable
         Debug.Log(_counter);
     }
 
-    public void StartInteraction()
-    {
-        Debug.Log("Started interaction!");
-        LoadShape();
+    // public void StartInteraction()
+    // {
+    //     Debug.Log("Started interaction!");
+    //     LoadShape();
 
-        ResetHasFinished();
+    //     ResetHasFinished();
+    // }
+
+    public void CloseInteraction()
+    {
+        _counter = 0;
+
+        Destroy(_selectedShape);
+        _selectedShape = null;
+
+        //_hasFinished = true;
+
+        SendResult?.Invoke(_wasCorrect);
     }
 }

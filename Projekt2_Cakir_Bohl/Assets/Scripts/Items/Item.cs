@@ -31,6 +31,11 @@ public class Item : Interaction, IInteractable
 
         yield return new WaitForSeconds(2);
 
+        CloseInteraction();
+    }
+
+    public void CloseInteraction()
+    {
         _hasFinished = true;
     }
 }

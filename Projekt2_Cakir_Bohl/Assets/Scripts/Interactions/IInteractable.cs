@@ -7,4 +7,6 @@ public interface IInteractable
     //public static event Action OnInteractionFinished { get; set; }
 
     void StartInteraction();
+
+    void CloseInteraction();
 }
