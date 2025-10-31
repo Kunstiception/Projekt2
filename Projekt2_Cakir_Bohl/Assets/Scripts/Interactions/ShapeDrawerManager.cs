@@ -67,6 +67,8 @@ public class ShapeDrawerManager : Interaction
             _wasCorrect = false;
         }
 
+        RaiseReset();
+
         CloseInteraction();
     }
 
@@ -75,7 +77,7 @@ public class ShapeDrawerManager : Interaction
         _counter++;
         Debug.Log(_counter);
 
-        if(InteractionType == InteractionType.Repeated && _counter == _correctCounter)
+        if(InteractionType == InteractionType.Repeated && _counter == _correctCounter -1)
         {
             SendCompleted?.Invoke();
 

@@ -1,10 +1,12 @@
 using System.Collections;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public PlayerStateMachine PlayerStateMachine => _playerStateMachine;
     public Interaction CurrentInteraction => _currentInteraction;
+    public Animator PlayerAnimator;
 
     [SerializeField] private Transform _feetTransform;
     [SerializeField] private Rigidbody2D _rigidbody;

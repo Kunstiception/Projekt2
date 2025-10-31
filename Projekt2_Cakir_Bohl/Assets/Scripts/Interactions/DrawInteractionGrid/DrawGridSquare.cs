@@ -1,23 +1,11 @@
 using System;
 using UnityEngine;
 
-public class DrawGridSquare : MonoBehaviour
+public class DrawGridSquare : Box
 {
     public string SquareName;
 
-    public static event Action<string> OnTouched;
-
-    private bool _wasTouched = false;
-
-    private void OnEnable()
-    {
-        DrawGridManager.Reset += Reset;
-    }
-
-    private void OnDisable()
-    {
-        DrawGridManager.Reset -= Reset;
-    }
+    public static new event Action<string> OnTouched;
 
     private void OnMouseOver()
     {
@@ -33,10 +21,5 @@ public class DrawGridSquare : MonoBehaviour
             OnTouched?.Invoke(SquareName);
             _wasTouched = true;
         }
-    }
-    
-    private void Reset()
-    {
-        _wasTouched = false;
     }
 }

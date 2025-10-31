@@ -1,3 +1,4 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class InteractionState: IState
@@ -12,6 +13,7 @@ public class InteractionState: IState
     public void Enter()
     {
         Debug.Log("Entering Interaction State!");
+        _playerController.PlayerAnimator.SetTrigger("TriggerInteract");
     }
 
     public void Execute()
@@ -24,6 +26,6 @@ public class InteractionState: IState
     
     public void Exit()
     {
-
+        _playerController.PlayerAnimator.SetTrigger("TriggerIdle");
     }
 }

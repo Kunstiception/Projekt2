@@ -1,3 +1,4 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class IdleState : IState
@@ -12,6 +13,8 @@ public class IdleState : IState
     public void Enter()
     {
         Debug.Log("Entering Idle State!");
+
+        _playerController.PlayerAnimator.SetBool("isWalking", false);
     }
 
     public void Execute()

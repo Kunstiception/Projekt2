@@ -17,5 +17,5 @@ public class GameConfig
     // Cooking
     public static int CookingMaxCounter = 10;
     public static float CookingIncrement = 0.1f;
-    public static float CookingAutoStep = 0.005f;
+    public static float CookingAutoStep = 0.0023f;
 }

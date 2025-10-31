@@ -1,3 +1,4 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class WalkState : IState
@@ -12,6 +13,7 @@ public class WalkState : IState
     public void Enter()
     {
         Debug.Log("Entering Walk State!");
+        _playerController.PlayerAnimator.SetBool("isWalking", true);
     }
 
     public void Execute()

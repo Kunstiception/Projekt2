@@ -41,10 +41,13 @@ public class CookingManager : Interaction, IInteractable
 
         if (_counter == GameConfig.CookingMaxCounter)
         {
+            Debug.LogError("Won!!!");
             CloseInteraction();
         }
 
         _slider.value -= GameConfig.CookingIncrement;
+
+        RaiseReset();
     }
 
     public void StartInteraction()

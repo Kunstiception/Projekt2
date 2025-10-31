@@ -15,8 +15,6 @@ public class DrawGridManager : Interaction, IInteractable
     private Coroutine _drawingCoroutine;
     private bool _isDrawing;
 
-    public static event Action Reset;
-
     private void OnEnable()
     {
         MouseDraw.OnMouseUp += CheckResult;
@@ -64,7 +62,7 @@ public class DrawGridManager : Interaction, IInteractable
 
             yield return new WaitUntil(() => _isDrawing == false);
 
-            Reset?.Invoke();
+            RaiseReset();
         }
     }
 

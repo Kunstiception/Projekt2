@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class Interaction : MonoBehaviour
     [SerializeField] protected Transform[] _anchors;
 
     protected bool _hasFinished;
+
+    public static event Action Reset;
 
     public Vector2 ReturnClosestAnchor(Vector3 playerPosition)
     {
@@ -18,9 +21,14 @@ public class Interaction : MonoBehaviour
 
     protected void ResetHasFinished()
     {
-        if(_hasFinished == true)
+        if (_hasFinished == true)
         {
             _hasFinished = false;
         }
+    }
+    
+    protected void RaiseReset()
+    {
+        Reset?.Invoke();
     }
 }
