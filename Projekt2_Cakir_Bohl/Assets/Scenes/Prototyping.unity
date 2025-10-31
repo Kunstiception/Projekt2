@@ -708,6 +708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bec809902d607449b34d7d80e2c463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wasTouched: 0
   SquareName: A2
 --- !u!212 &360134189
 SpriteRenderer:
@@ -1545,6 +1546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bec809902d607449b34d7d80e2c463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wasTouched: 0
   SquareName: C1
 --- !u!65 &627933992
 BoxCollider:
@@ -1668,6 +1670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bec809902d607449b34d7d80e2c463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wasTouched: 0
   SquareName: C3
 --- !u!65 &641091719
 BoxCollider:
@@ -2013,7 +2016,7 @@ Transform:
   m_GameObject: {fileID: 759657029}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.06, y: -0.97, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2679,15 +2682,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.6
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2747,7 +2750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4457492664103866751, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.77878815
+      value: 0.778787
       objectReference: {fileID: 0}
     - target: {fileID: -4457492664103866751, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2759,7 +2762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4457492664103866751, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.6272871
+      value: 0.62728846
       objectReference: {fileID: 0}
     - target: {fileID: -4457492664103866751, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2783,7 +2786,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2237477094000168929, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.33181286
+      value: 0.33181307
       objectReference: {fileID: 0}
     - target: {fileID: -2237477094000168929, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.y
@@ -2791,7 +2794,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2237477094000168929, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.94334525
+      value: 0.9433452
       objectReference: {fileID: 0}
     - target: {fileID: -2237477094000168929, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2807,7 +2810,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1020570918535578349, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.45511156
+      value: 0.45510992
       objectReference: {fileID: 0}
     - target: {fileID: -1020570918535578349, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.y
@@ -2815,7 +2818,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1020570918535578349, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.8904344
+      value: 0.8904352
       objectReference: {fileID: 0}
     - target: {fileID: -1020570918535578349, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2823,7 +2826,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 410104769359178272, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7944649
+      value: 0.7944648
       objectReference: {fileID: 0}
     - target: {fileID: 410104769359178272, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2835,7 +2838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 410104769359178272, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.6073102
+      value: 0.6073101
       objectReference: {fileID: 0}
     - target: {fileID: 410104769359178272, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2855,11 +2858,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4938134489091036716, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9940842
+      value: 0.9940838
       objectReference: {fileID: 0}
     - target: {fileID: 4938134489091036716, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.108612545
+      value: -0.108616106
       objectReference: {fileID: 0}
     - target: {fileID: 4938134489091036716, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2875,11 +2878,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7745864868100242469, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.97573674
+      value: 0.9757368
       objectReference: {fileID: 0}
     - target: {fileID: 7745864868100242469, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.21894723
+      value: -0.218947
       objectReference: {fileID: 0}
     - target: {fileID: 7745864868100242469, guid: 268552f11f1cde54191a3b501e53e952, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -3103,6 +3106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bec809902d607449b34d7d80e2c463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wasTouched: 0
   SquareName: C2
 --- !u!65 &1036286684
 BoxCollider:
@@ -3379,6 +3383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bec809902d607449b34d7d80e2c463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wasTouched: 0
   SquareName: A1
 --- !u!65 &1049600359
 BoxCollider:
@@ -4043,6 +4048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bec809902d607449b34d7d80e2c463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wasTouched: 0
   SquareName: B2
 --- !u!65 &1286834892
 BoxCollider:
@@ -4630,6 +4636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bec809902d607449b34d7d80e2c463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wasTouched: 0
   SquareName: B1
 --- !u!65 &1388264256
 BoxCollider:
@@ -4822,6 +4829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bec809902d607449b34d7d80e2c463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wasTouched: 0
   SquareName: B3
 --- !u!65 &1482007317
 BoxCollider:
@@ -4964,8 +4972,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.25, y: -0.04499042}
-  m_Size: {x: 0.46629736, y: 1.7147893}
+  m_Offset: {x: -0.28327274, y: 0.026667474}
+  m_Size: {x: 0.3997518, y: 1.0084385}
   m_Direction: 0
 --- !u!1 &1629973152
 GameObject:
@@ -5662,6 +5670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bec809902d607449b34d7d80e2c463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wasTouched: 0
   SquareName: A3
 --- !u!212 &1850606077
 SpriteRenderer:
