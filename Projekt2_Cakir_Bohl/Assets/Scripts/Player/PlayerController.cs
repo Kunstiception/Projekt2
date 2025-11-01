@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _feetTransform;
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private LayerMask _raycastLayermask;
+    [SerializeField] private Transform _playerTransform;
     private bool _isWalkingRight;
     private Vector2 _walkingDirection;
     private Vector2 _actualTargetPoint;
@@ -27,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _isWalkingRight = true;
-        _scale = transform.localScale;
+        _scale = _playerTransform.localScale;
         _movementCoroutine = null;
 
         _playerStateMachine.Initialize(_playerStateMachine.idleState);
@@ -74,7 +75,7 @@ public class PlayerController : MonoBehaviour
     private void ScaleSprite()
     {
         // vorläufige Rechnung
-        transform.localScale = _scale * (1 - (transform.position.y - 0.1f) / 10);
+        _playerTransform.localScale = _scale * (1 - (transform.position.y - 0.1f) / 10);
     }
 
     private void FlipSprite(Vector2 cursorPosition)
@@ -96,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
         // https://stackoverflow.com/questions/26568542/flipping-a-2d-sprite-animation-in-unity-2d
         _scale.x *= -1;
-        transform.localScale = _scale;
+        _playerTransform.localScale = _scale;
 
         _isWalkingRight = !_isWalkingRight;
     }

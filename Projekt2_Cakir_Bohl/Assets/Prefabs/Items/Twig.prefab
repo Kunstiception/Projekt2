@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 8959962837902646828}
   - component: {fileID: 6040022832587297590}
   m_Layer: 8
-  m_Name: Chestnut
+  m_Name: Twig
   m_TagString: Interaction
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,7 +112,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.5169811, g: 0.15387197, b: 0.1199786, a: 1}
+  m_Color: {r: 0.2905661, g: 0.14392292, b: 0.089362755, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -137,7 +137,7 @@ MonoBehaviour:
   _anchors:
   - {fileID: 394302204818567358}
   - {fileID: 6761342187868262177}
-  Stats: {fileID: 11400000, guid: ccbf169c6d1386945bf1a3c3c6b89d2a, type: 2}
+  Stats: {fileID: 11400000, guid: 4c82fed0e67e61240b795407ac46409c, type: 2}
 --- !u!58 &6040022832587297590
 CircleCollider2D:
   m_ObjectHideFlags: 0
